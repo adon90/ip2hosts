@@ -2,11 +2,11 @@
 
 It gets hosts from Robtex, Virustotal, dig -x, Shodan and the first 10 Bing pages.
 
-in order to use Shodan, use:
+in order to use Shodan, enter:
 
 shodan init [api_key]
 
-if don't have, comment the Shodan line.
+if don't want to use it, comment the Shodan line.
 
 just use it like:
 
