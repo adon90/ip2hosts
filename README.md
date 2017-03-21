@@ -7,4 +7,4 @@ in order to use Shodan, enter:
 shodan init [api_key]
 
 
-Usage: ip2hosts [ip]
+Usage: ./ip2hosts [ip]
