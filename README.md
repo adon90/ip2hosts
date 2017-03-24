@@ -1,6 +1,6 @@
 # ip2hosts
 
-It gets hosts from Robtex, Virustotal, dig -x, Shodan, Nmap SSL cert and the first 10 Bing pages.
+It gets hosts from Robtex, Virustotal, dig -x, Shodan, nmap ssl-cert script, the first 10 Bing pages and http://domains.yougetsignal.com/.
 
 in order to use Shodan, enter:
 
