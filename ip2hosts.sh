@@ -12,7 +12,7 @@ ip2hosts() {
 	dig +short -x $1 >> /tmp/domains.txt
 	#for i in {0..9}; do curl "https://www.bing.com/search?q=ip%3a$1&first=$i1" -s |  grep -Po "(?<=<a href=\").*?(?= h=)" | grep -Po "(?<=://).*?(?=/)" | egrep -v "microsoft|bing|pointdecontact"; done >> /tmp/domains.txt
 	seq 0 9 | xargs -n1 -P4 bash -c 'i=$0; url="https://www.bing.com/search?q=ip%3a'$1'&first=${i}1"; curl -s $url | grep -Po "(?<=<a href=\").*?(?= h=)" | grep -Po "(?<=://).*?(?=/)" | egrep -v "microsoft|bing|pointdecontact"' >> /tmp/domains.txt
-	nmap -p443 --script ssl-cert $1 | grep Subject | grep -Po "(?<=commonName=).*?(?=/)" | tr '[:upper:]' '[:lower:]' >> /tmp/domains.txt
+	nmap -Pn -p443 --script ssl-cert $1 | grep Subject | grep -Po "(?<=commonName=).*?(?=/)" | tr '[:upper:]' '[:lower:]' >> /tmp/domains.txt
 	sed -i 's/\.$//g' /tmp/domains.txt
 	curl -X POST -F "remoteAddress=$1"  http://domains.yougetsignal.com/domains.php -s | /usr/bin/perl -p | grep -Poz "(?s)\[.*\]" | cat -v | grep -Po "(?<=\").+(?=\")" >> /tmp/domains.txt
 	curl -i -s -k  -X 'POST' -F "theinput=$1" -F "thetest=reverseiplookup" -F "name_of_nonce_field=23gk"    'https://hackertarget.com/reverse-ip-lookup/' | grep -Poz "(?s)(?<=<pre id=\"formResponse\">).*?(?=</pre>)" | grep -Piva "no records" | grep -Pa \w>> /tmp/domains.txt
