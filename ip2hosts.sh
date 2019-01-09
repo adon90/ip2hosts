@@ -17,7 +17,7 @@ ip2hosts() {
 	nmap -Pn -p443 --script ssl-cert $1 | grep Subject | grep -Po "(?<=commonName=).*?(?=/)" | tr '[:upper:]' '[:lower:]' >> /tmp/domains.txt
 	sed -i 's/\.$//g' /tmp/domains.txt
 	curl -X POST -F "remoteAddress=$1"  http://domains.yougetsignal.com/domains.php -s | /usr/bin/perl -p | grep -Poz "(?s)\[.*\]" | cat -v | grep -Po "(?<=\").+(?=\")" >> /tmp/domains.txt
-	curl -i -s -k  -X 'POST' -F "theinput=$1" -F "thetest=reverseiplookup" -F "name_of_nonce_field=23gk"    'https://hackertarget.com/reverse-ip-lookup/' | grep -Poz "(?s)(?<=<pre id=\"formResponse\">).*?(?=</pre>)" | grep -Piva "no records" | grep -Pa \w>> /tmp/domains.txt
+	#curl -i -s -k  -X 'POST' -F "theinput=$1" -F "thetest=reverseiplookup" -F "name_of_nonce_field=23gk"    'https://hackertarget.com/reverse-ip-lookup/' | grep -Poz "(?s)(?<=<pre id=\"formResponse\">).*?(?=</pre>)" | grep -Piva "no records" | grep -Pa \w>> /tmp/domains.txt
 	curl -i -s -k  -X 'GET' 'https://www.threatcrowd.org/graphHtml.php?ip=$1' | grep -Po "(?<=source: ').*?(?=')" | egrep -v ^[0-9] | sort -u >> /tmp/domains.txt
 	curl -s https://api.hackertarget.com/reverseiplookup/?q=$1 >> /tmp/domains.txt
 	curl -s "https://api.viewdns.info/reverseip/?host=$1&apikey=89f94f2c39609baf16ab25dca31e9076ae7a69b6&output=xml" | grep -Po "(?<=<name>).*?(?=</name>)" >> /tmp/domains.txt
